@@ -13,7 +13,7 @@ This project provides automated testing for the RESTful API endpoints of an onli
 - **Comprehensive Test Coverage**: Happy paths and edge cases for Books and Authors APIs
 - **Clean Architecture**: Separation of concerns with services, models, and utilities
 - **Code Quality Tools**: ESLint and Prettier for consistent code style
-- **Test Reporting**: HTML and JSON test reports
+- **Test Reporting**: Playwright HTML reports and Allure reports for comprehensive test analysis
 - **CI/CD Integration**: GitHub Actions workflow for continuous testing
 
 ## 🏗️ Project Structure
@@ -67,10 +67,15 @@ books/
    npm install
    ```
 
-3. **Install Playwright browsers**:
+3. **(Optional) Install Java for Allure reports** (if you want to use Allure reporting locally):
    ```bash
-   npx playwright install --with-deps
+   # macOS with Homebrew:
+   brew install openjdk@17
+   
+   # Or download from: https://www.java.com
    ```
+   
+   **Note:** Java is only required if you want to generate Allure reports locally. Playwright HTML reports work without Java. CI/CD automatically has Java configured.
 
 ## 🧪 Running Tests
 
@@ -112,21 +117,77 @@ npx playwright test --grep "GET.*Books"
 
 ## 📊 Test Reports
 
-After running tests, generate and view the HTML report:
+This project generates **two types of test reports** - choose the one that best fits your needs:
 
+### 1. Playwright HTML Report (Default)
+
+The **Playwright HTML report** is automatically generated after running tests. It's lightweight, fast, and doesn't require any additional setup.
+
+**View the Playwright report:**
 ```bash
 npm run test:report
 ```
 
-The HTML report will open in your default browser, showing:
+**Features:**
+- ✅ No additional dependencies required
+- ✅ Opens immediately after tests
+- ✅ Shows test execution summary
+- ✅ Pass/fail status for each test
+- ✅ Execution time and error details
+- ✅ Request/response details
 
-- Test execution summary
-- Pass/fail status for each test
-- Execution time
-- Error details and stack traces
-- Request/response details
+**Location:** `playwright-report/index.html`
 
-Test reports are generated in the `playwright-report/` directory.
+### 2. Allure Report (Advanced)
+
+The **Allure report** provides a more detailed, interactive view with enhanced visualizations, historical trends, and better organization. It requires Java to generate the HTML report from test results.
+
+**Prerequisites for Allure (Local Development):**
+- Java 8 or higher (Java 17 recommended)
+- Install Java: `brew install openjdk@17` (macOS) or download from [java.com](https://www.java.com)
+
+**Generate and view Allure report:**
+```bash
+# Run tests first (generates allure-results/)
+npm test
+
+# Generate and open Allure report
+npm run allure:view
+
+# Or use individual commands:
+npm run allure:generate  # Generate HTML report
+npm run allure:open      # Open in browser
+
+# Or serve directly (generates on-the-fly):
+npm run allure:serve
+```
+
+**Features:**
+- 📊 Interactive dashboards and charts
+- 📈 Historical test execution trends
+- 🔍 Detailed step-by-step execution logs
+- 📎 Attachments and screenshots
+- 🏷️ Test categorization and grouping
+- 📉 Better visualization of test results over time
+
+**Locations:**
+- **Test results:** `allure-results/` (raw data - auto-generated)
+- **HTML report:** `allure-report/index.html` (generated from results)
+
+### Which Report to Use?
+
+- **For quick local testing:** Use Playwright HTML report (`npm run test:report`) - no setup required
+- **For detailed analysis:** Use Allure report (`npm run allure:view`) - requires Java, but provides richer insights
+- **For CI/CD:** Both reports are automatically generated and uploaded as artifacts in GitHub Actions
+
+### CI/CD Reports
+
+In GitHub Actions, both reports are automatically generated and uploaded:
+- **Playwright report:** Download the `playwright-report` artifact
+- **Allure report:** Download the `allure-report` artifact (includes `index.html`)
+- **Allure results:** Download the `allure-results` artifact if you want to generate the report locally
+
+**Note:** In CI, Java is automatically set up, so Allure reports are always generated.
 
 ## 📝 Code Quality
 
@@ -228,7 +289,7 @@ The `playwright.config.ts` file contains:
 
 - Test directory configuration
 - Base URL for API requests
-- Reporter settings (HTML, list, JSON)
+- Reporter settings (HTML, list, JSON, Allure)
 - Retry and parallel execution settings
 
 ### ESLint Configuration
@@ -261,6 +322,8 @@ The `.prettierrc` file defines:
 - `eslint`: Linting tool
 - `prettier`: Code formatter
 - `@typescript-eslint/*`: TypeScript ESLint plugins
+- `allure-playwright`: Allure reporter for Playwright
+- `allure-commandline`: Allure command-line tool for report generation
 
 ## 🐛 Troubleshooting
 
@@ -296,11 +359,11 @@ MIT License - feel free to use this project for learning and assessment purposes
 
 ## 👤 Author
 
-Created as part of an API Automation Testing Assessment.
+Marko Vukobrat
 
 ## 📞 Support
 
-For issues or questions, please open an issue in the repository or contact the maintainer.
+For issues or questions, please open an issue in the repository or contact the me.
 
 ---
 
