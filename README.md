@@ -85,18 +85,6 @@ books/
 npm test
 ```
 
-### Run tests in headed mode (with browser UI)
-
-```bash
-npm run test:headed
-```
-
-### Run tests in UI mode (interactive)
-
-```bash
-npm run test:ui
-```
-
 ### Run tests in debug mode
 
 ```bash
@@ -113,6 +101,26 @@ npx playwright test tests/books-api.spec.ts
 
 ```bash
 npx playwright test --grep "GET.*Books"
+```
+
+### Run only Happy Path tests
+
+```bash
+# Using npm script (recommended):
+npm run test:happy
+
+# Or using Playwright directly:
+npx playwright test --grep "(Happy Path)"
+```
+
+### Run only Edge Case tests
+
+```bash
+# Using npm script (recommended):
+npm run test:edge
+
+# Or using Playwright directly:
+npx playwright test --grep "(Edge Case)"
 ```
 
 ## 📊 Test Reports
@@ -344,14 +352,6 @@ The `.prettierrc` file defines:
 - Run `npm run type-check` to see detailed errors
 - Ensure all dependencies are installed: `npm install`
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests and ensure they pass
-5. Run linting and formatting checks
-6. Submit a pull request
 
 ## 📄 License
 
